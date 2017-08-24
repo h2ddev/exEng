@@ -15,7 +15,10 @@ public class SceneTransition : MonoBehaviour
 
 	public void PerformTransition ()
 	{
-		Transition.LoadLevel (scene, duration, color);
-//		SceneManager.LoadScene(scene);
+		if (scene == "Main") {
+			SceneManager.LoadScene (scene);
+		} else
+			Transition.LoadLevel (scene, duration, color);
+
 	}
 }
