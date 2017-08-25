@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -335,6 +336,7 @@ public class GameManager : MonoBehaviour
 		Area.Hide ();
 		winDialog.Hide ();
 		GameObject.Find ("NextButton").GetComponent<Animator> ().SetBool ("Select", false);
+//		GameObject.Find ("ResetButton").SetActive ();
 
 		CompoundShape currentCompoundShape = GameObject.FindObjectOfType<CompoundShape> ();
 		if (currentCompoundShape != null) {
