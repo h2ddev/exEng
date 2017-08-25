@@ -6,19 +6,19 @@ using UnityEngine.SceneManagement;
 
  
 public class UIEvents : MonoBehaviour
-{
-
-	 
+{ 
 	public Text lbMoney;
 
 	void Start ()
 	{
+		UpdateMoney ();
 		EventManager.Instance.SubscribeTopic ("CHANGE_BALANCE", UpdateMoney);
 	}
 
 	void UpdateMoney ()
 	{
-		lbMoney.text = SaveDataInfo.SaveGold.ToString ();
+		if (lbMoney != null)
+			lbMoney.text = SaveDataInfo.SaveGold.ToString ();
 	}
 
 	public void AlbumShapeEvent (TableShape tableShape)
