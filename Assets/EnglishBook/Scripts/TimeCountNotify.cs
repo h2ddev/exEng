@@ -12,8 +12,7 @@ public class TimeCountNotify : MonoBehaviour
 	}
 
 	void Awake ()
-	{
-
+	{ 
 		DontDestroyOnLoad (gameObject);
 		StartCoroutine (CountdownTime ()); 
 	}

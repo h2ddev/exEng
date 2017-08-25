@@ -7,6 +7,20 @@ using UnityEngine.SceneManagement;
  
 public class UIEvents : MonoBehaviour
 {
+
+	 
+	public Text lbMoney;
+
+	void Start ()
+	{
+		EventManager.Instance.SubscribeTopic ("CHANGE_BALANCE", UpdateMoney);
+	}
+
+	void UpdateMoney ()
+	{
+		lbMoney.text = SaveDataInfo.SaveGold.ToString ();
+	}
+
 	public void AlbumShapeEvent (TableShape tableShape)
 	{
 		if (tableShape == null) {
