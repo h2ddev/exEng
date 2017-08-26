@@ -8,11 +8,12 @@ using UnityEngine.SceneManagement;
 public class UIEvents : MonoBehaviour
 {
 	public Text lbMoney;
+	public PopupOpener BtnMoreCoin;
 
 	void Start ()
 	{
 		UpdateMoney ();
-		EventManager.Instance.SubscribeTopic ("CHANGE_BALANCE", UpdateMoney);
+		EventManager.Instance.SubscribeTopic ("CHANGE_BALANCE", UpdateMoney);  
 	}
 
 	void UpdateMoney ()
@@ -34,9 +35,10 @@ public class UIEvents : MonoBehaviour
 		TableShape.selectedShape = tableShape;
 		if (SaveDataInfo.SaveGold > 0) {
 			SaveDataInfo.SaveGold--;  
+			EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
 			LoadGameScene ();
-		} else {
-			Debug.LogError ("Not enought Coin");
+		} else { 
+			BtnMoreCoin.OpenPopup ();
 		}
 	}
 
@@ -170,9 +172,9 @@ public class UIEvents : MonoBehaviour
 		
 		if (value.name.Equals ("YesButton")) {
 			Debug.Log ("Reset Confirm Dialog : Yes button clicked");
-			if (gameManager != null) { 
-				SaveDataInfo.SaveGold--; 
-				EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
+			SaveDataInfo.SaveGold--; 
+			EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
+			if (gameManager != null) {
 				gameManager.ResetShape ();
 			}
 			

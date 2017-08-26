@@ -149,6 +149,7 @@ public class GameManager : MonoBehaviour
 	public static CompoundShape compoundShape;
 
 	public Image shapePicture;
+	public PopupOpener BtnMoreCoin;
 
 	void Awake ()
 	{
@@ -307,8 +308,10 @@ public class GameManager : MonoBehaviour
 				}
 
 			}
-		} else {
-			Debug.LogError ("Not enought Coin");
+			SaveDataInfo.SaveGold--; 
+			EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
+		} else { 
+			BtnMoreCoin.OpenPopup ();
 		}
 	}
 
@@ -327,8 +330,10 @@ public class GameManager : MonoBehaviour
 					CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
 				}
 			}
-		} else {
-			Debug.LogError ("Not enough Coin");
+			SaveDataInfo.SaveGold--;
+			EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
+		} else { 
+			BtnMoreCoin.OpenPopup ();
 		}
 	}
 
@@ -729,8 +734,8 @@ public class GameManager : MonoBehaviour
 				s.Spell ();
 			}
 			timer.Reset ();
-		} else {
-			Debug.LogError ("Not enough Coin");
+		} else { 
+			BtnMoreCoin.OpenPopup ();
 		}
 	}
 
