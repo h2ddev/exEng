@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
  
 public class UIEvents : MonoBehaviour
-{ 
+{
 	public Text lbMoney;
 
 	void Start ()
@@ -32,7 +32,12 @@ public class UIEvents : MonoBehaviour
 		}
 
 		TableShape.selectedShape = tableShape;
-		LoadGameScene ();
+		if (SaveDataInfo.SaveGold > 0) {
+			SaveDataInfo.SaveGold--;  
+			LoadGameScene ();
+		} else {
+			Debug.LogError ("Not enought Coin");
+		}
 	}
 
 	public void PointerButtonEvent (Pointer pointer)
@@ -58,9 +63,9 @@ public class UIEvents : MonoBehaviour
 	}
 
 	public void LoadGameScene ()
-	{
+	{ 
 		StartCoroutine (SceneLoader.LoadSceneAsync ("Game"));
-//		SceneManager.LoadScene ("Game");
+		//		SceneManager.LoadScene ("Game"); 
 	}
 
 	public void LoadAlbumScene ()
@@ -165,7 +170,9 @@ public class UIEvents : MonoBehaviour
 		
 		if (value.name.Equals ("YesButton")) {
 			Debug.Log ("Reset Confirm Dialog : Yes button clicked");
-			if (gameManager != null) {
+			if (gameManager != null) { 
+				SaveDataInfo.SaveGold--; 
+				EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
 				gameManager.ResetShape ();
 			}
 			

@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
 		if (Input.GetMouseButtonDown (0)) {
 			if (!shape.completed)
 				brightEffect.GetComponent<ParticleEmitter> ().emit = true;
-
+			
 			hit2d = Physics2D.Raycast (GetCurrentPlatformClickPosition (Camera.main), Vector2.zero);
 			if (hit2d.collider != null) {
 				if (hit2d.transform.tag == "Start") {
@@ -215,7 +215,7 @@ public class GameManager : MonoBehaviour
 					shape.DisableTracingHand ();
 					EnableHand ();
 				}
-			}
+			} 
 
 		} else if (Input.GetMouseButtonUp (0)) {
 			brightEffect.GetComponent<ParticleEmitter> ().emit = false;
@@ -278,33 +278,37 @@ public class GameManager : MonoBehaviour
 	/// Go to the Next shape.
 	/// </summary>
 	public void NextShape ()
-	{
-		if (TableShape.selectedShape.ID >= 1 && TableShape.selectedShape.ID < ShapesTable.shapes.Count) {
-			//Get the next shape and check if it's locked , then do not load the next shape
-			if (TableShape.selectedShape.ID + 1 <= shapesManager.shapes.Count) {
+	{ 
+		if (SaveDataInfo.SaveGold > 0) { 
+			if (TableShape.selectedShape.ID >= 1 && TableShape.selectedShape.ID < ShapesTable.shapes.Count) {
+				//Get the next shape and check if it's locked , then do not load the next shape
+				if (TableShape.selectedShape.ID + 1 <= shapesManager.shapes.Count) {
 
-				if (DataManager.IsShapeLocked (TableShape.selectedShape.ID + 1, shapesManager)) {
+					if (DataManager.IsShapeLocked (TableShape.selectedShape.ID + 1, shapesManager)) {
+						//Play lock sound effectd
+						if (lockedSFX != null && effectsAudioSource != null) {
+							CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
+						}
+						//Skip the next
+						return;
+					}
+				}
+				TableShape.selectedShape = ShapesTable.shapes [TableShape.selectedShape.ID];//Set the selected shape
+				CreateShape ();//Create new shape
+
+			} else {
+				if (TableShape.selectedShape.ID == ShapesTable.shapes.Count) {
+					GameObject.FindObjectOfType<UIEvents> ().LoadAlbumScene ();
+				} else {
 					//Play lock sound effectd
 					if (lockedSFX != null && effectsAudioSource != null) {
 						CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
 					}
-					//Skip the next
-					return;
 				}
-			}
-			TableShape.selectedShape = ShapesTable.shapes [TableShape.selectedShape.ID];//Set the selected shape
-			CreateShape ();//Create new shape
 
+			}
 		} else {
-			if (TableShape.selectedShape.ID == ShapesTable.shapes.Count) {
-				GameObject.FindObjectOfType<UIEvents> ().LoadAlbumScene ();
-			} else {
-				//Play lock sound effectd
-				if (lockedSFX != null && effectsAudioSource != null) {
-					CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
-				}
-			}
-
+			Debug.LogError ("Not enought Coin");
 		}
 	}
 
@@ -313,14 +317,18 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	public void PreviousShape ()
 	{
-		if (TableShape.selectedShape.ID > 1 && TableShape.selectedShape.ID <= ShapesTable.shapes.Count) {
-			TableShape.selectedShape = ShapesTable.shapes [TableShape.selectedShape.ID - 2];
-			CreateShape ();
-		} else {
-			//Play lock sound effectd
-			if (lockedSFX != null && effectsAudioSource != null) {
-				CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
+		if (SaveDataInfo.SaveGold > 0) { 
+			if (TableShape.selectedShape.ID > 1 && TableShape.selectedShape.ID <= ShapesTable.shapes.Count) {
+				TableShape.selectedShape = ShapesTable.shapes [TableShape.selectedShape.ID - 2];
+				CreateShape ();
+			} else {
+				//Play lock sound effectd
+				if (lockedSFX != null && effectsAudioSource != null) {
+					CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
+				}
 			}
+		} else {
+			Debug.LogError ("Not enough Coin");
 		}
 	}
 
@@ -335,8 +343,7 @@ public class GameManager : MonoBehaviour
 		GameObject.Find ("ResetConfirmDialog").GetComponent<Dialog> ().Hide ();
 		Area.Hide ();
 		winDialog.Hide ();
-		GameObject.Find ("NextButton").GetComponent<Animator> ().SetBool ("Select", false);
-//		GameObject.Find ("ResetButton").SetActive ();
+		GameObject.Find ("NextButton").GetComponent<Animator> ().SetBool ("Select", false); 
 
 		CompoundShape currentCompoundShape = GameObject.FindObjectOfType<CompoundShape> ();
 		if (currentCompoundShape != null) {
@@ -686,41 +693,45 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	public void ResetShape ()
 	{
-		List<Shape> shapes = new List<Shape> ();
-		if (compoundShape != null) {
-			shapes = compoundShape.shapes;
-		} else {
-			shapes.Add (shape);
-		}
+		if (SaveDataInfo.SaveGold > 0) { 
+			List<Shape> shapes = new List<Shape> ();
+			if (compoundShape != null) {
+				shapes = compoundShape.shapes;
+			} else {
+				shapes.Add (shape);
+			}
 
-		completeEffect.emit = false;
-		GameObject.Find ("NextButton").GetComponent<Animator> ().SetBool ("Select", false);
-		Area.Hide ();
-		winDialog.Hide ();
+			completeEffect.emit = false;
+			GameObject.Find ("NextButton").GetComponent<Animator> ().SetBool ("Select", false);
+			Area.Hide ();
+			winDialog.Hide ();
 
-		foreach (Shape s in shapes) {
-			if (s == null)
-				continue;
+			foreach (Shape s in shapes) {
+				if (s == null)
+					continue;
 			
-			s.completed = false;
-			s.GetComponent<Animator> ().SetBool ("Completed", false);
-			s.CancelInvoke ();
-			s.DisableTracingHand ();
-			EnglishTracingBook.Path[] paths = s.GetComponentsInChildren<EnglishTracingBook.Path> ();
-			foreach (EnglishTracingBook.Path path in paths) {
-				path.Reset ();
-			}
+				s.completed = false;
+				s.GetComponent<Animator> ().SetBool ("Completed", false);
+				s.CancelInvoke ();
+				s.DisableTracingHand ();
+				EnglishTracingBook.Path[] paths = s.GetComponentsInChildren<EnglishTracingBook.Path> ();
+				foreach (EnglishTracingBook.Path path in paths) {
+					path.Reset ();
+				}
 
-			if (compoundShape == null) {
-				StartAutoTracing (s);
-			} else if (compoundShape.GetShapeIndexByInstanceID (s.GetInstanceID ()) == 0) {
-				shape = compoundShape.shapes [0];
-				StartAutoTracing (shape);
-			}
+				if (compoundShape == null) {
+					StartAutoTracing (s);
+				} else if (compoundShape.GetShapeIndexByInstanceID (s.GetInstanceID ()) == 0) {
+					shape = compoundShape.shapes [0];
+					StartAutoTracing (shape);
+				}
 
-			s.Spell ();
+				s.Spell ();
+			}
+			timer.Reset ();
+		} else {
+			Debug.LogError ("Not enough Coin");
 		}
-		timer.Reset ();
 	}
 
 

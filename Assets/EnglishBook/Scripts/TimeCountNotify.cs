@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeCountNotify : MonoBehaviour
-{ 
+{
 	public float time = 1800f;
 
 	public static TimeCountNotify Instance {
@@ -27,6 +27,9 @@ public class TimeCountNotify : MonoBehaviour
 				yield return new WaitForSeconds (10f);
 				ManagerTimeNotify.Instance.Notify.SetActive (false);
 				time = 1800f;
+			}
+			if (SaveDataInfo.TimeShareFace > 0) {
+				SaveDataInfo.TimeShareFace--;  
 			}
 		}
 	}

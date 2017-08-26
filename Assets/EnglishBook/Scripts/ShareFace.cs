@@ -20,7 +20,16 @@ public class ShareFace : MonoBehaviour
 
 
 	private string Description = "A simple application for parents with young children learning to write and learn English. Just play, learn to write, and learn English.\n- Letter writing: Lowercase letters, capital letters to guide each stroke.\n- Literacy in English from A to Z.\n- Digital Writing: Simple, easy-to-remember line guide.\n- The phrase is based on the alphabet.\n- Interface smart, fun but not harmful to the eye.\n- Functional alert if baby play too long.\n- No in-app advertising.\n* Note to parents:\nIf you are looking for an educational application that helps your baby to play while learning Magic Crayons is worth it for you.\nYou and your baby will love it!";
- 
+
+	public static ShareFace Instance {
+		get;
+		private set;
+	}
+
+	void Awake ()
+	{  
+		Instance = this; 
+	}
 
 	public void ShareOnFB ()
 	{
@@ -32,7 +41,12 @@ public class ShareFace : MonoBehaviour
 
 		Application.OpenURL ("https://www.facebook.com/dialog/feed?" + "app_id=" + AppID + "&link=" + Link + "&picture=" + Picture + "&name=" + ReplaceSpace (Name) + "&caption=" + ReplaceSpace (Caption) + "&description=" + ReplaceSpace (Description) + "&redirect_uri=https://facebook.com/");
 
-	} 
+		if (SaveDataInfo.TimeShareFace <= 0) {
+			SaveDataInfo.SaveGold += 24;	
+			SaveDataInfo.TimeShareFace = 28800;
+			EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
+		}  
+	}
 
 	string ReplaceSpace (string val)
 	{ 

@@ -7,6 +7,7 @@ public class SaveDataInfo
 	private const string nameKey = "name";
 	private const string sexKey = "sex";
 	private const string goldKey = "gold";
+	private const string timeshareFacedKey = "timeshareface";
 
 	public static string SaveName {
 		get {
@@ -41,6 +42,18 @@ public class SaveDataInfo
 		}
 		set {
 			PlayerPrefs.SetInt (goldKey, value);
+		}
+	}
+
+	public static int TimeShareFace {
+		get {
+			if (PlayerPrefs.HasKey (timeshareFacedKey))
+				return PlayerPrefs.GetInt (timeshareFacedKey);
+			else
+				return 0;
+		}
+		set {
+			PlayerPrefs.SetInt (timeshareFacedKey, value);
 		}
 	}
 	 
