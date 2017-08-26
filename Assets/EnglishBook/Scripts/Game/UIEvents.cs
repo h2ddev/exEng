@@ -38,7 +38,8 @@ public class UIEvents : MonoBehaviour
 			EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
 			LoadGameScene ();
 		} else { 
-			BtnMoreCoin.OpenPopup ();
+			if (BtnMoreCoin != null)
+				BtnMoreCoin.OpenPopup ();
 		}
 	}
 
