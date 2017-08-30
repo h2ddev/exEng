@@ -7,10 +7,10 @@ public class ShareFace : MonoBehaviour
 	private string AppID = "1593340424049694";
 
 
-	private string Link = "";
+	private string Link = "https://itunes.apple.com/us/app/magic-crayons-i-can-write-numbers-and-letters/id1274208840?ls=1&mt=8";
 
  
-	private string Picture = "https://lh3.googleusercontent.com/2lWBvQXX2RsUKXTeH9YKlrR5Q-W-AIHAwpokjy_6zorrhbtvLTKip1OovdOx8sTVPlU";
+	private string Picture = "https://kenhthongtinbds.com/wp-content/uploads/2017/08/icon-1024x1024.jpg";
 
 
 	private string Name = "Magic Crayons - I can write Numbers and Letters";
@@ -19,7 +19,7 @@ public class ShareFace : MonoBehaviour
 	private string Caption = "I love to share this Magic Crayons App for teaching my kids to write in easy way/ easily.";
 
 
-	private string Description = "A simple application for parents with young children learning to write and learn English. Just play, learn to write, and learn English.\n- Letter writing: Lowercase letters, capital letters to guide each stroke.\n- Literacy in English from A to Z.\n- Digital Writing: Simple, easy-to-remember line guide.\n- The phrase is based on the alphabet.\n- Interface smart, fun but not harmful to the eye.\n- Functional alert if baby play too long.\n- No in-app advertising.\n* Note to parents:\nIf you are looking for an educational application that helps your baby to play while learning Magic Crayons is worth it for you.\nYou and your baby will love it!";
+	private string Description = "Magic Crayons - I can write Numbers and Letters.\nA simple Application for parents to teach their kids how to write and learn English. Learning to write English by playing.\n- Writing Letters: to give full particular strokes of every lowercase and capitalize Letter.\n- Reading Letters in English from A to Z.\n- Writing Numbers: to give instruction of every stroke in simple and easy way.\n- Learning to write phrases based on Alphabet.\n- Friendly and smart App Interface and safe for eyes.\n- Warning Function: to keep your kids from playing too much.\n* Note for parents:\nIf you are in search of a learning by playing educational App for your kids, then Magic Crayons is designed for you.\nParents and kids will definitely love it!";
 
 	public static ShareFace Instance {
 		get;
@@ -35,8 +35,6 @@ public class ShareFace : MonoBehaviour
 	{
 		#if UNITY_ANDROID
 		Link = "https://play.google.com/store/apps/details?id=iapi.bluewhale.learningenglish.write";
-		#elif UNITY_IOS 
-		Link = "https://itunes.apple.com/us/app/magic-crayons-i-can-write-numbers-and-letters/id1274208840?ls=1&mt=8";
 		#endif
 
 		Application.OpenURL ("https://www.facebook.com/dialog/feed?" + "app_id=" + AppID + "&link=" + Link + "&picture=" + Picture + "&name=" + ReplaceSpace (Name) + "&caption=" + ReplaceSpace (Caption) + "&description=" + ReplaceSpace (Description) + "&redirect_uri=https://facebook.com/");
