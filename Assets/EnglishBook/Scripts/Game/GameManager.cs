@@ -150,9 +150,14 @@ public class GameManager : MonoBehaviour
 
 	public Image shapePicture;
 	public PopupOpener BtnMoreCoin;
+	private AudioSource bgAudisource;
 
 	void Awake ()
 	{
+		bgAudisource = GameObject.Find ("BackgroundMusic").GetComponents<AudioSource> () [0];
+		if (bgAudisource.volume > 0)
+			bgAudisource.volume = .2f;
+
 		//Initiate values and setup the references
 		cursorDefaultSize = hand.transform.localScale;
 		cursorClickSize = cursorDefaultSize / 1.2f;
@@ -174,8 +179,9 @@ public class GameManager : MonoBehaviour
 		}
 		ResetTargetQuarter ();
 		SetShapeOrderColor ();
-		CreateShape ();
+
 	}
+
 
 	void Start ()
 	{
@@ -183,6 +189,11 @@ public class GameManager : MonoBehaviour
 		if (effectsAudioSource == null) {
 			effectsAudioSource = GameObject.Find ("AudioSources").GetComponents<AudioSource> () [1];
 		}
+
+		CreateShape ();
+//		if (lockedSFX != null && effectsAudioSource != null) {
+//			CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
+//		}
 	}
 
 	// Update is called once per frame

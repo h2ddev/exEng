@@ -38,7 +38,7 @@ public class SaveDataInfo
 			if (PlayerPrefs.HasKey (goldKey))
 				return PlayerPrefs.GetInt (goldKey);
 			else
-				return 24;
+				return 200;
 		}
 		set {
 			PlayerPrefs.SetInt (goldKey, value);

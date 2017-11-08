@@ -301,10 +301,11 @@ public class ShapesTable : MonoBehaviour
 
 		if (!tableShape.isLocked) {
 			tableShape.transform.Find ("Cover").gameObject.SetActive (false);
-			tableShape.transform.Find ("Lock").gameObject.SetActive (false);
+			tableShape.transform.Find ("Lock").gameObject.SetActive (false); 
 		} else {
 			tableShape.GetComponent<Button> ().interactable = false;
 			tableShape.transform.Find ("Stars").gameObject.SetActive (false);
+			tableShape.transform.Find ("PlayButton").gameObject.SetActive (false); 
 		}
 
 		//Set Last reached shape
