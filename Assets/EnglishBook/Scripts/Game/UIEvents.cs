@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Advertisements;
 
  
 public class UIEvents : MonoBehaviour
@@ -10,9 +11,27 @@ public class UIEvents : MonoBehaviour
 	public Text lbMoney;
 	public PopupOpener BtnMoreCoin;
 
+
+	#if UNITY_IOS
+	private string gameId = "1602501";
+
+
+
+
+#elif UNITY_ANDROID
+	private string gameId = "1602502";
+	#endif
+
+	  
+	private string placementId = "rewardedVideo";
+	 
 	void Start ()
 	{
 		UpdateMoney ();
+
+		if (Advertisement.isSupported) {
+			Advertisement.Initialize (gameId, true);
+		} 
 		EventManager.Instance.SubscribeTopic ("CHANGE_BALANCE", UpdateMoney);  
 	}
 
@@ -23,16 +42,18 @@ public class UIEvents : MonoBehaviour
 	}
 
 	public void AlbumShapeEvent (TableShape tableShape)
-	{
+	{ 
 		if (tableShape == null) {
 			return;
 		}
 
+		TableShape.selectedShape = tableShape;
+
 		if (tableShape.isLocked) {
+			ShowAd ();
 			return;
 		}
 
-		TableShape.selectedShape = tableShape;
 		if (SaveDataInfo.SaveGold > 0) {
 			SaveDataInfo.SaveGold--;  
 			EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
@@ -42,6 +63,40 @@ public class UIEvents : MonoBehaviour
 				BtnMoreCoin.OpenPopup ();
 		}
 	}
+
+
+	private void ShowAd ()
+	{
+		if (Advertisement.IsReady ()) {
+			
+			ShowOptions options = new ShowOptions ();
+			options.resultCallback = HandleShowResult;
+
+			Advertisement.Show (placementId, options);
+		}
+	}
+
+	void HandleShowResult (ShowResult result)
+	{
+		if (result == ShowResult.Finished) {
+			if (SaveDataInfo.SaveGold > 0) {
+				SaveDataInfo.SaveGold--;  
+				EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE"); 
+
+				DataManager.SaveShapeLockedStatus (TableShape.selectedShape.ID, false,GameObject.Find (ShapesManager.shapesManagerReference).GetComponent<ShapesManager> ());
+				LoadGameScene ();
+			} else { 
+				if (BtnMoreCoin != null)
+					BtnMoreCoin.OpenPopup ();
+			}
+		} else if (result == ShowResult.Skipped) {
+			Debug.LogWarning ("Video was skipped - Do NOT reward the player");
+
+		} else if (result == ShowResult.Failed) {
+			Debug.LogError ("Video failed to show");
+		}
+	}
+
 
 	public void PointerButtonEvent (Pointer pointer)
 	{

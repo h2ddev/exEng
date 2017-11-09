@@ -651,6 +651,13 @@ public class GameManager : MonoBehaviour
 			timer.Stop ();
 			Area.Show ();
 			winDialog.Show ();
+			 
+			if (SaveDataInfo.TimeShowAds <= 0) {  
+				AdsManager.Instance.ShowNormalAds ();
+
+				SaveDataInfo.TimeShowAds = 1800;
+			}
+
 			GameObject.Find ("NextButton").GetComponent<Animator> ().SetTrigger ("Select");
 			completeEffect.emit = true;
 			if (completedSFX != null && effectsAudioSource != null) {

@@ -17,7 +17,7 @@ public class TimeCountNotify : MonoBehaviour
 		StartCoroutine (CountdownTime ()); 
 	}
 
-	public IEnumerator CountdownTime ()
+	 IEnumerator CountdownTime ()
 	{
 		while (true) {
 			yield return null;
