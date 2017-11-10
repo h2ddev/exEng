@@ -50,6 +50,7 @@ public class UIEvents : MonoBehaviour
 		TableShape.selectedShape = tableShape;
 
 		if (tableShape.isLocked) {
+			//DataManager.SaveShapeLockedStatus (TableShape.selectedShape.ID, false,GameObject.Find (ShapesManager.shapesManagerReference).GetComponent<ShapesManager> ());
 			ShowAd ();
 			return;
 		}
@@ -82,8 +83,6 @@ public class UIEvents : MonoBehaviour
 			if (SaveDataInfo.SaveGold > 0) {
 				SaveDataInfo.SaveGold--;  
 				EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE"); 
-
-				DataManager.SaveShapeLockedStatus (TableShape.selectedShape.ID, false,GameObject.Find (ShapesManager.shapesManagerReference).GetComponent<ShapesManager> ());
 				LoadGameScene ();
 			} else { 
 				if (BtnMoreCoin != null)
