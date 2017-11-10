@@ -9,11 +9,11 @@ public class AdsManager : MonoBehaviour
 	//---------- ONLY NECESSARY FOR ASSET PACKAGE INTEGRATION: ----------//
 
 	#if UNITY_IOS
-	private string gameId = "1602501";
+	private string gameId = "1603281";
 
 
 #elif UNITY_ANDROID
-	private string gameId = "1602502";
+	private string gameId = "1603282";
 	#endif
 
 
@@ -22,8 +22,7 @@ public class AdsManager : MonoBehaviour
 	public static AdsManager Instance;
 
 	void Awake ()
-	{
-		DontDestroyOnLoad (gameObject);
+	{ 
 		Instance = this;
 	}
 
@@ -60,7 +59,7 @@ public class AdsManager : MonoBehaviour
 	void HandleShowResult (ShowResult result)
 	{
 		if (result == ShowResult.Finished) {
-			SaveDataInfo.SaveGold += 24;
+			SaveDataInfo.SaveGold += 3;
 			EventManager.Instance.RaiseEventInTopic ("CHANGE_BALANCE");
 		} else if (result == ShowResult.Skipped) {
 			Debug.LogWarning ("Video was skipped - Do NOT reward the player");

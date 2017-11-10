@@ -13,13 +13,13 @@ public class UIEvents : MonoBehaviour
 
 
 	#if UNITY_IOS
-	private string gameId = "1602501";
+	private string gameId = "1603281";
 
 
 
 
 #elif UNITY_ANDROID
-	private string gameId = "1602502";
+	private string gameId = "1603282";
 	#endif
 
 	  
@@ -50,7 +50,6 @@ public class UIEvents : MonoBehaviour
 		TableShape.selectedShape = tableShape;
 
 		if (tableShape.isLocked) {
-			//DataManager.SaveShapeLockedStatus (TableShape.selectedShape.ID, false,GameObject.Find (ShapesManager.shapesManagerReference).GetComponent<ShapesManager> ());
 			ShowAd ();
 			return;
 		}

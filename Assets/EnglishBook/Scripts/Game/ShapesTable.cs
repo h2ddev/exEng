@@ -258,7 +258,10 @@ public class ShapesTable : MonoBehaviour
 				}
 
 			}
-			tableShapeGameObject.GetComponent<Button> ().onClick.AddListener (() => GameObject.FindObjectOfType<UIEvents> ().AlbumShapeEvent (tableShapeGameObject.GetComponent<TableShape> ()));
+			tableShapeGameObject.GetComponent<Button> ().onClick.AddListener (() => {
+				GameObject.FindObjectOfType<UIEvents> ().AlbumShapeEvent (tableShapeGameObject.GetComponent<TableShape> ());
+				DataManager.SaveShapeLockedStatus (TableShape.selectedShape.ID, false,shapesManager);
+			});
 
 			SettingUpShape (tableShapeComponent, ID, groupIndex);//setting up the shape contents (stars number ,islocked,...)
 			shapes.Add (tableShapeComponent);//add table shape component to the list

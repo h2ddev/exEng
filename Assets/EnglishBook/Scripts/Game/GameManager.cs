@@ -655,7 +655,7 @@ public class GameManager : MonoBehaviour
 			if (SaveDataInfo.TimeShowAds <= 0) {  
 				AdsManager.Instance.ShowNormalAds ();
 
-				SaveDataInfo.TimeShowAds = 1800;
+				SaveDataInfo.TimeShowAds = 30000;
 			}
 
 			GameObject.Find ("NextButton").GetComponent<Animator> ().SetTrigger ("Select");

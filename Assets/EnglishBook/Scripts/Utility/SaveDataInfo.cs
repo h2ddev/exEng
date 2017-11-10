@@ -63,7 +63,7 @@ public class SaveDataInfo
 			if (PlayerPrefs.HasKey (timeshowAdsKey))
 				return PlayerPrefs.GetInt (timeshowAdsKey);
 			else
-				return 1800;
+				return 30000;
 		}
 		set {
 			PlayerPrefs.SetInt (timeshowAdsKey, value);
