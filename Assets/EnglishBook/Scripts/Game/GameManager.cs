@@ -312,9 +312,10 @@ public class GameManager : MonoBehaviour
 				if (TableShape.selectedShape.ID == ShapesTable.shapes.Count) {
 					GameObject.FindObjectOfType<UIEvents> ().LoadAlbumScene ();
 				} else {
+					
 					//Play lock sound effectd
 					if (lockedSFX != null && effectsAudioSource != null) {
-						CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
+						CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume); 
 					}
 				}
 
@@ -333,6 +334,15 @@ public class GameManager : MonoBehaviour
 	{
 		if (SaveDataInfo.SaveGold > 0) { 
 			if (TableShape.selectedShape.ID > 1 && TableShape.selectedShape.ID <= ShapesTable.shapes.Count) {
+				if (DataManager.IsShapeLocked (TableShape.selectedShape.ID - 1, shapesManager)) {
+					//Play lock sound effectd
+					if (lockedSFX != null && effectsAudioSource != null) {
+						CommonUtil.PlayOneShotClipAt (lockedSFX, Vector3.zero, effectsAudioSource.volume);
+					}
+					//Skip the prev
+					return;
+				}
+
 				TableShape.selectedShape = ShapesTable.shapes [TableShape.selectedShape.ID - 2];
 				CreateShape ();
 			} else {
